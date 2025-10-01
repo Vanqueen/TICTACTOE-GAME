@@ -11,13 +11,9 @@ function Square({ value, isWinning, onSquareClick }) {
 
   return (
     <button type="button" onClick={onSquareClick}
-      className={`${baseStyle} ${winningStyle}`}
+      className={`${baseStyle} ${winningStyle} ${valueStyle}`}
     >
-      <span
-        className={`${valueStyle}`}
-      >
-        {value}
-      </span>
+      {value}
     </button>
   );
 }

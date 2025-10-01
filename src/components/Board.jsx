@@ -1,21 +1,21 @@
 import Square from "./Square";
-import calculateWinner from './Winner';
 import { useState } from "react";
 
-function Board({ xIsNext, squares, onPlay, winningSquares }) {
+function Board({ xIsNext, squares, onPlay, winningSquares, boardSize = 3 }) {
   const [squareClick, setSquareClick] = useState("");
-  const winner = calculateWinner(squares);
 
   /**
    * Handles a click on a square.
    * @param {Number} i The index of the square that was clicked.
    */
   function handleClick(i) {
-    if (squares[i] || winningSquares.length > 0 || winner) return;
+    console.log('Board handleClick - square:', i, 'current value:', squares[i], 'winningSquares:', winningSquares.length);
+    if (squares[i] || winningSquares.length > 0) return;
 
     const nextSquares = squares.slice();
     const playedValue = xIsNext ? "X" : "O";
     nextSquares[i] = playedValue;
+    console.log('Board calling onPlay with:', nextSquares);
 
     setSquareClick(playedValue); // ✅ enregistre le dernier symbole joué
     onPlay(nextSquares);
@@ -27,7 +27,9 @@ function Board({ xIsNext, squares, onPlay, winningSquares }) {
       <div className="text-lg font-semibold text-gray-700">
         {squareClick ? `Dernier coup : ${squareClick}` : ''}
       </div>
-      <div className="grid grid-cols-3 gap-2">
+
+      {/*  grid-cols-3 grid-rows-3 */}
+      <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${boardSize}, minmax(0, 1fr))` }}>
         {squares.map((square, index) => (
           <Square
             key={index}
