@@ -211,14 +211,24 @@ function GameHistory() {
                           Match #{series.games.length - gameIndex}
                         </div>
                         <div className="text-xs text-white/60 mb-1">
-                          {game.winner === "Match nul" ? "Match nul" : `${game.winner} gagne`}
+                          {game.winner === "Match nul" ? "Match nul" : 
+                           game.gameMode === 'ai' && game.playerName ? 
+                             (game.winner === game.firstPlayer ? `${game.playerName} gagne` : 'IA gagne') :
+                             `${game.winner} gagne`
+                          }
                         </div>
                         <div className="text-xs text-white/50 space-y-1">
                           <div>📏 {game.level || `${game.boardSize}x${game.boardSize}`}</div>
                           <div>⏱️ {formatDuration(game.duration)}</div>
                           <div>🎯 {game.totalMoves || 0} coups</div>
                           {game.gameMode === 'ai' && (
-                            <div>🤖 vs IA</div>
+                            <div>🤖 vs IA ({game.aiDifficulty || 'medium'})</div>
+                          )}
+                          {game.firstPlayer && (
+                            <div>🎲 {game.firstPlayer} commence</div>
+                          )}
+                          {game.forfeit && (
+                            <div>🏳️ Forfait</div>
                           )}
                           {game.winningMoves?.length > 0 && (
                             <div>🏆 Ligne gagnante</div>

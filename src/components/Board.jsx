@@ -9,15 +9,13 @@ function Board({ xIsNext, squares, onPlay, winningSquares, boardSize = 3 }) {
    * @param {Number} i The index of the square that was clicked.
    */
   function handleClick(i) {
-    console.log('Board handleClick - square:', i, 'current value:', squares[i], 'winningSquares:', winningSquares.length);
     if (squares[i] || winningSquares.length > 0) return;
 
     const nextSquares = squares.slice();
     const playedValue = xIsNext ? "X" : "O";
     nextSquares[i] = playedValue;
-    console.log('Board calling onPlay with:', nextSquares);
 
-    setSquareClick(playedValue); // ✅ enregistre le dernier symbole joué
+    setSquareClick(playedValue);
     onPlay(nextSquares);
   }
 

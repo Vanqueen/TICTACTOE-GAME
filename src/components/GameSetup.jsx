@@ -40,8 +40,6 @@ function GameSetup({ boardSize, setBoardSize, firstPlayer, setFirstPlayer, onSta
             <option value={3}>3x3</option>
             <option value={4}>4x4</option>
             <option value={5}>5x5</option>
-            <option value={6}>6x6</option>
-            <option value={7}>7x7</option>
           </select>
         </div>
         

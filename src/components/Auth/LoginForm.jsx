@@ -25,7 +25,9 @@ function LoginForm({ onToggle }) {
     try {
       const result = await login(formData.email, formData.password);
       
-      if (!result || !result.success) {
+      if (result && result.success && result.user) {
+        localStorage.setItem('currentUser', result.user.username || result.user.email);
+      } else {
         setError(result?.message || 'Échec de la connexion');
       }
     } catch (error) {
