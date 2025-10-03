@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -8,9 +9,23 @@ function Header() {
 
   const isActive = (path) => location.pathname === path;
 
+  // ========================================
+  // 🔐 AUTHENTIFICATION
+  // ========================================
+  const { user, logout } = useAuth();
+    
+  /**
+   * Gère la déconnexion de l'utilisateur
+   * Nettoie le token et les données locales
+   */
+  const handleLogout = () => {
+    logout();
+    localStorage.removeItem('currentUser');
+  };
+
   return (
     <header className="w-full bg-white/10 backdrop-blur-md border-b border-white/20 sticky top-0 z-50">
-      <div className="flex items-center justify-between max-w-7xl px-6 mx-auto py-4">
+      <div className="flex items-center justify-between px-4 mx-auto py-4">
         <Link to="/" className="text-2xl font-bold tracking-wide text-white hover:text-blue-300 transition-colors">
           🎮 TIC TAC TOE
         </Link>
@@ -28,43 +43,56 @@ function Header() {
           </svg>
         </button>
         
-        <nav className={`${
-          mobileMenuOpen ? 'flex' : 'hidden'
-        } absolute top-full left-0 w-full bg-black/50 backdrop-blur-md border-b border-white/20 flex-col py-4 md:relative md:top-auto md:left-auto md:w-auto md:bg-transparent md:border-none md:flex md:flex-row md:py-0`}>
-          <Link 
-            className={`px-4 py-2 mx-2 text-white font-medium rounded-lg transition-all duration-200 ${
-              isActive('/') 
-                ? 'bg-blue-500/80 hover:bg-blue-600/80' 
-                : 'hover:bg-white/20'
-            }`}
-            to="/"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            🎲 Jeu
-          </Link>
-          <Link 
-            className={`px-4 py-2 mx-2 text-white font-medium rounded-lg transition-all duration-200 ${
-              isActive('/history') 
-                ? 'bg-blue-500/80 hover:bg-blue-600/80' 
-                : 'hover:bg-white/20'
-            }`}
-            to="/history"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            📈 Historique
-          </Link>
-          <Link 
-            className={`px-4 py-2 mx-2 text-white font-medium rounded-lg transition-all duration-200 ${
-              isActive('/multiplayer') 
-                ? 'bg-blue-500/80 hover:bg-blue-600/80' 
-                : 'hover:bg-white/20'
-            }`}
-            to="/multiplayer"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            🌐 Multijoueur
-          </Link>
-        </nav>
+        <div className="flex flex-row justify-end gap-4 items-center">
+          <nav className={`${
+            mobileMenuOpen ? 'flex' : 'hidden'
+          } absolute top-full left-0 w-full border-white/20 flex-col py-4 md:relative md:top-auto md:left-auto md:w-auto md:bg-transparent md:border-none md:flex md:flex-row md:py-0`}>
+            <Link
+              className={`px-4 py-2 mx-2 text-white font-medium rounded-lg transition-all duration-200 ${
+                isActive('/')
+                  ? 'bg-blue-500/80 hover:bg-blue-600/80'
+                  : 'hover:bg-white/20'
+              }`}
+              to="/"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              🎲 Jeu
+            </Link>
+            <Link
+              className={`px-4 py-2 mx-2 text-white font-medium rounded-lg transition-all duration-200 ${
+                isActive('/history')
+                  ? 'bg-blue-500/80 hover:bg-blue-600/80'
+                  : 'hover:bg-white/20'
+              }`}
+              to="/history"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              📈 Historique
+            </Link>
+            <Link
+              className={`px-4 py-2 mx-2 text-white font-medium rounded-lg transition-all duration-200 ${
+                isActive('/multiplayer')
+                  ? 'bg-blue-500/80 hover:bg-blue-600/80'
+                  : 'hover:bg-white/20'
+              }`}
+              to="/multiplayer"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              🌐 Multijoueur
+            </Link>
+          </nav>
+          {user && (
+              <div className="flex items-center gap-4">
+                <span className="text-white/80">👤 {user.username || user.email}</span>
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg font-medium shadow-lg transform hover:scale-105 transition-all duration-200"
+                >
+                  🚪 Déconnexion
+                </button>
+              </div>
+            )}
+        </div>
       </div>
     </header>
   );
