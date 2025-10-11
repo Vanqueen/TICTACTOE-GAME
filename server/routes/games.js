@@ -1,6 +1,11 @@
 import express from 'express';
 import Game from '../models/Game.js';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config({
+  path: `.env${process.env.NODE_ENV ? '.' + process.env.NODE_ENV : ''}`
+});
 
 const router = express.Router();
 
