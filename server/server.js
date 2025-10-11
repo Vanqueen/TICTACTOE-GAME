@@ -11,6 +11,11 @@ import Game from './models/Game.js';
 import authRoutes from './routes/auth.js';
 import gameRoutes from './routes/games.js';
 import path from "path";
+import { fileURLToPath } from "url";
+
+// Pour avoir __dirname en ESModules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
