@@ -10,7 +10,10 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (token && user) {
-      const newSocket = io('http://localhost:5000');
+      const newSocket = io(import.meta.env.VITE_API_URL || 'http://localhost:5000', {
+        transports: ['websocket'],
+        autoConnect: true,
+      });
       
       newSocket.on('connect', () => {
         console.log('✅ Connected to server');

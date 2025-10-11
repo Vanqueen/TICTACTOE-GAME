@@ -23,14 +23,14 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173", "http://localhost:5179"],
+    origin: ["http://https://tictactoe-game-qvzg.onrender.com:5173", "http://https://tictactoe-game-qvzg.onrender.com:5179"],
     methods: ["GET", "POST"]
   }
 });
 
 // Middleware
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:5179"]
+  origin: ["http://https://tictactoe-game-qvzg.onrender.com:5173", "http://https://tictactoe-game-qvzg.onrender.com:5179"]
 }));
 app.use(express.json());
 
