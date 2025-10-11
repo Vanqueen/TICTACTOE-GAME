@@ -1,7 +1,11 @@
 const { connect} = require("mongoose");
 const dotenv = require("dotenv");
 const { ServerApiVersion } = requir('mongodb');
-dotenv.config();
+dotenv.config({
+  path: `.env${process.env.NODE_ENV ? '.' + process.env.NODE_ENV : ''}`
+});
+
+console.log("MongoDB URI : ", process.env.MONGO_URI);
 
 const connectDB = async () => {
     try {

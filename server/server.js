@@ -17,7 +17,12 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config();
+dotenv.config({
+  path: `.env${process.env.NODE_ENV ? '.' + process.env.NODE_ENV : ''}`
+});
+
+console.log(process.env.PORT);        // 5000 en prod
+console.log(process.env.JWT_SECRET);
 
 const app = express();
 const server = createServer(app);
