@@ -1,6 +1,6 @@
-import { connect} from "mongoose";
-import dotenv from "dotenv";
-import { ServerApiVersion } from 'mongodb';
+const { connect} = require("mongoose");
+const dotenv = require("dotenv");
+const { ServerApiVersion } = requir('mongodb');
 dotenv.config();
 
 const connectDB = async () => {

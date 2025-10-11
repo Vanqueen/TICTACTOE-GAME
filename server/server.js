@@ -6,11 +6,11 @@ import cors from 'cors';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
-import User from './models/User.cjs';
-import Game from './models/Game.cjs';
-import authRoutes from './routes/auth.cjs';
-import gameRoutes from './routes/games.cjs';
-const path = require("path");
+import User from './models/User.js';
+import Game from './models/Game.js';
+import authRoutes from './routes/auth.js';
+import gameRoutes from './routes/games.js';
+import path from "path";
 
 dotenv.config();
 

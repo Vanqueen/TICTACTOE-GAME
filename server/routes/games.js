@@ -1,5 +1,5 @@
 import express from 'express';
-import Game from '../models/Game.cjs';
+import Game from '../models/Game.js';
 import jwt from 'jsonwebtoken';
 
 const router = express.Router();
