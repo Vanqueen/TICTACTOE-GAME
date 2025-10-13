@@ -2,6 +2,12 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import dotenv from 'dotenv';
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Pour avoir __dirname en ESModules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Résoudre le chemin du fichier .env en fonction de l'environnement
 const envFilePath = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
