@@ -5,8 +5,9 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
+    "seed": "node seeders/index.js",
     "start": "node server.js",
-    "serve": "nodemon server.js"
+    "serve": "nodemon --trace-warnings server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

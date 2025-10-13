@@ -4,7 +4,7 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import connectDB from './config/db.cjs';
+import connectDB from './config/db.js';
 
 import User from './models/User.js';
 import Game from './models/Game.js';

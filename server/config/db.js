@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const { ServerApiVersion } = require("mongodb");
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import { ServerApiVersion } from "mongodb";
 import path from "path";
 import { fileURLToPath } from "url";
 
