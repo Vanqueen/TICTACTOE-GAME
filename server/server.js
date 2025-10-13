@@ -1,10 +1,10 @@
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import mongoose from 'mongoose';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import connectDB from './config/db.cjs';
 
 import User from './models/User.js';
 import Game from './models/Game.js';
@@ -40,9 +40,14 @@ app.use(cors({
 app.use(express.json());
 
 // MongoDB connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/tictactoe')
-  .then(() => console.log('✅ MongoDB connected'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
+// mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/tictactoe')
+//   .then(() => console.log('✅ MongoDB connected'))
+//   .catch(err => console.error('❌ MongoDB connection error:', err));
+
+connectDB()
+.then(()=> console.log('✅ Base de donnée connectée avec succès'))
+.catch((err) => console.log('❌ Erreur de connexion à la base de donnée', err));
+
 
 // Routes
 app.use('/api/auth', authRoutes);

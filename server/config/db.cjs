@@ -10,7 +10,8 @@ console.log("MongoDB URI : ", process.env.MONGO_URI);
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI, {
+    const uri = process.env.MONGO_URI;
+    await mongoose.connect(uri, {
       serverApi: ServerApiVersion.v1,
       strict: true,
       deprecationErrors: true,
