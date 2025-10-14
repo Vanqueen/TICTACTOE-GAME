@@ -54,11 +54,32 @@ const io = new Server(server, {
 });
 
 // Middleware
-app.use(cors({
-  origin: allowedOrigins,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));
+// app.use(cors({
+//   origin: allowedOrigins,
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+//   credentials: true
+// }));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Autoriser les requêtes sans origine (Postman, tests locaux)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log("❌ CORS bloqué pour :", origin);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  })
+);
+
+// Important pour les requêtes OPTIONS (préflight)
+app.options("*", cors());
+
 app.use(express.json());
 
 // MongoDB connection
