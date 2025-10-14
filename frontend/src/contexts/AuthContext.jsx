@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import { AuthContext } from './authContext.js';
 import { api } from '../axios.js';
 
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setToken(null);
     removeStorageItem('token');
-    delete axios.defaults.headers.common['Authorization'];
+    // delete axios.defaults.headers.common['Authorization'];
   }, []);
 
   const fetchProfile = useCallback(async () => {
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       fetchProfile();
     } else {
       setLoading(false);
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
       setToken(newToken);
       setUser(userData);
       setStorageItem('token', newToken);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
       
       return { success: true, user: userData };
     } catch (error) {
@@ -101,7 +101,7 @@ export const AuthProvider = ({ children }) => {
       setToken(newToken);
       setUser(userData);
       setStorageItem('token', newToken);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
       
       return { success: true, user: userData };
     } catch (error) {
