@@ -14,7 +14,7 @@ const envFilePath = process.env.NODE_ENV === 'production' ? '.env.production' : 
 
 // Charger les variables d'environnement à partir du fichier
 const result = dotenv.config({
-    path: path.resolve(__dirname, envFilePath)
+    path: path.resolve(__dirname, '..', envFilePath)
 });
 
 if (result.error) {

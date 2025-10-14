@@ -11,9 +11,9 @@ const __dirname = path.dirname(__filename);
 // Résoudre le chemin du fichier .env en fonction de l'environnement
 const envFilePath = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
 
-// Charger les variables d'environnement à partir du fichier
+// Charger les variables d'environnement à partir du fichier (répertoire parent)
 const result = dotenv.config({
-    path: path.resolve(__dirname, envFilePath)
+    path: path.resolve(__dirname, '..', envFilePath)
 });
 
 if (result.error) {
