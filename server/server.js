@@ -60,9 +60,21 @@ connectDB()
 .catch((err) => console.log('❌ Erreur de connexion à la base de donnée', err));
 
 
+// Servir React en production
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+}
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/games', gameRoutes);
+
+// Catch-all handler pour React (doit être après les routes API)
+if (process.env.NODE_ENV === "production") {
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
+  });
+}
 
 // Socket.IO connection handling
 const connectedUsers = new Map();
@@ -288,13 +300,7 @@ function checkWinner(board, boardSize) {
   return null;
 }
 
-// Servir React en production
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
-  });
-}
+
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
