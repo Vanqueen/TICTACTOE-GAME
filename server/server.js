@@ -20,14 +20,16 @@ const __dirname = path.dirname(__filename);
 // Résoudre le chemin du fichier .env en fonction de l'environnement
 const envFilePath = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
 
-// Charger les variables d'environnement à partir du fichier
+// Charger les variables d'environnement à partir du fichier (optionnel)
 const result = dotenv.config({
-    path: path.resolve(__dirname, '..', envFilePath)
+    path: path.resolve(__dirname, envFilePath)
 });
 
-if (result.error) {
+if (result.error && process.env.NODE_ENV !== 'production') {
     console.error('Erreur lors du chargement du fichier .env :', result.error);
-    process.exit(1); // Quittez l'application en cas d'erreur de chargement du fichier .env
+    process.exit(1);
+} else if (result.error) {
+    console.log('Fichier .env non trouvé, utilisation des variables d\'environnement du système');
 }
 
 console.log(process.env.PORT);        // 5000 en prod
