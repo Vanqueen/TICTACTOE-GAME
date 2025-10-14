@@ -29,9 +29,7 @@ const connectDB = async () => {
   try {
     const uri = process.env.MONGO_URI;
     await mongoose.connect(uri, {
-      serverApi: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
+      serverApi: ServerApiVersion.v1
     });
     console.log("✅ Connecté à MongoDB avec succès");
   } catch (error) {
