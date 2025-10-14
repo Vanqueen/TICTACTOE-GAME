@@ -65,6 +65,17 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 }
 
+// Route de test
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'API fonctionne!', timestamp: new Date() });
+});
+
+// Middleware de logging pour debug
+app.use('/api', (req, res, next) => {
+  console.log(`📡 API Request: ${req.method} ${req.path}`);
+  next();
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/games', gameRoutes);
@@ -72,6 +83,10 @@ app.use('/api/games', gameRoutes);
 // Catch-all handler pour React (doit être après les routes API)
 if (process.env.NODE_ENV === "production") {
   app.get("*", (req, res) => {
+    // Ne pas servir index.html pour les routes API
+    if (req.path.startsWith('/api/')) {
+      return res.status(404).json({ error: 'API route not found' });
+    }
     res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
   });
 }
