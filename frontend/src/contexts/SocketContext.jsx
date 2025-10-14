@@ -10,7 +10,7 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (token && user) {
-      const socketUrl = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const socketUrl = import.meta.env.VITE_API_URL || 'https://tictactoe-game-99ln.onrender.com'; // || 'http://localhost:5000'
       const newSocket = io(socketUrl, {
         transports: ['websocket', 'polling'],
         autoConnect: true,
