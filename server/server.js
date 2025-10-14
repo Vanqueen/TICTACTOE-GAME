@@ -13,6 +13,14 @@ import gameRoutes from './routes/games.js';
 import path from "path";
 import { fileURLToPath } from "url";
 
+const allowedOrigins = [
+  "https://tictactoe-game-iy2aujiiv-vanqueens-projects.vercel.app", // ton frontend Vercel
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "http://localhost:5175",
+  "http://localhost:5179"
+];
+
 // Pour avoir __dirname en ESModules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -39,14 +47,16 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ["https://tictactoe-game-qvzg.onrender.com", "http://localhost:5173", "http://localhost:5179"],
+    origin: allowedOrigins,
     methods: ["GET", "POST"]
   }
 });
 
 // Middleware
 app.use(cors({
-  origin: ["https://tictactoe-game-qvzg.onrender.com", "http://localhost:5173", "http://localhost:5179"]
+  origin: allowedOrigins,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
 }));
 app.use(express.json());
 
@@ -61,9 +71,9 @@ connectDB()
 
 
 // Servir React en production
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
-}
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, "../frontend/dist")));
+// }
 
 // Route de test
 app.get('/api/test', (req, res) => {
@@ -81,15 +91,15 @@ app.use('/api/auth', authRoutes);
 app.use('/api/games', gameRoutes);
 
 // Catch-all handler pour React (doit être après les routes API)
-if (process.env.NODE_ENV === "production") {
-  app.get("*", (req, res) => {
-    // Ne pas servir index.html pour les routes API
-    if (req.path.startsWith('/api/')) {
-      return res.status(404).json({ error: 'API route not found' });
-    }
-    res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
-  });
-}
+// if (process.env.NODE_ENV === "production") {
+//   app.get("*", (req, res) => {
+//     // Ne pas servir index.html pour les routes API
+//     if (req.path.startsWith('/api/')) {
+//       return res.status(404).json({ error: 'API route not found' });
+//     }
+//     res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
+//   });
+// }
 
 // Socket.IO connection handling
 const connectedUsers = new Map();
