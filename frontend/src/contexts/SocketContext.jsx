@@ -10,9 +10,12 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (token && user) {
-      const newSocket = io(import.meta.env.VITE_API_URL || 'http://localhost:5000', {
-        transports: ['websocket'],
+      const socketUrl = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const newSocket = io(socketUrl, {
+        transports: ['websocket', 'polling'],
         autoConnect: true,
+        timeout: 20000,
+        forceNew: true
       });
       
       newSocket.on('connect', () => {
@@ -32,6 +35,14 @@ export const SocketProvider = ({ children }) => {
 
       newSocket.on('authError', (error) => {
         console.error('🚫 Auth error:', error);
+      });
+
+      newSocket.on('connect_error', (error) => {
+        console.error('🔌 Connection error:', error);
+      });
+
+      newSocket.on('reconnect_error', (error) => {
+        console.error('🔄 Reconnection error:', error);
       });
 
       setSocket(newSocket);
