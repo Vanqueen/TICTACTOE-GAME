@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import axios from 'axios';
 import { AuthContext } from './authContext.js';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+import { api } from '../axios.js';
 
 const getStorageItem = (key) => {
   try {
@@ -47,7 +46,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchProfile = useCallback(async () => {
     try {
-      const response = await axios.get(`${API_URL}/auth/profile`);
+      const response = await api.get(`/auth/profile`);
       setUser(response.data.user);
     } catch (error) {
       console.error('Failed to fetch profile:', error);
@@ -68,7 +67,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = useCallback(async (email, password) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, {
+      const response = await api.post(`/auth/login`, {
         email,
         password
       });
@@ -91,7 +90,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = useCallback(async (username, email, password) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/register`, {
+      const response = await api.post(`/auth/register`, {
         username,
         email,
         password

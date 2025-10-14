@@ -21,7 +21,7 @@ const sessionConfig = session({
   cookie: {
     secure: process.env.NODE_ENV === "production" ? true : false,
     httpOnly: process.env.NODE_ENV === "production" ? true : false,
-    domain: process.env.APP_HOST,
+    domain: process.env.API_URL,
     maxAge: 60 * 60 * 24 * 1000, // Durée de vie du cookie de session en millisecondes :: 
   },
   store: store,
