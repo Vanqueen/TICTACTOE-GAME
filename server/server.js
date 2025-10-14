@@ -1,41 +1,80 @@
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import mongoose from 'mongoose';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import connectDB from './config/db.js';
 
 import User from './models/User.js';
 import Game from './models/Game.js';
 import authRoutes from './routes/auth.js';
 import gameRoutes from './routes/games.js';
+import path from "path";
+import { fileURLToPath } from "url";
 
-dotenv.config();
+// Pour avoir __dirname en ESModules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Résoudre le chemin du fichier .env en fonction de l'environnement
+const envFilePath = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+
+// Charger les variables d'environnement à partir du fichier (optionnel)
+const result = dotenv.config({
+    path: path.resolve(__dirname, envFilePath)
+});
+
+if (result.error && process.env.NODE_ENV !== 'production') {
+    console.error('Erreur lors du chargement du fichier .env :', result.error);
+    process.exit(1);
+} else if (result.error) {
+    console.log('Fichier .env non trouvé, utilisation des variables d\'environnement du système');
+}
+
+console.log(process.env.PORT);        // 5000 en prod
+console.log(process.env.JWT_SECRET);
 
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173", "http://localhost:5179"],
+    origin: ["https://tictactoe-game-qvzg.onrender.com", "http://localhost:5173", "http://localhost:5179"],
     methods: ["GET", "POST"]
   }
 });
 
 // Middleware
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:5179"]
+  origin: ["https://tictactoe-game-qvzg.onrender.com", "http://localhost:5173", "http://localhost:5179"]
 }));
 app.use(express.json());
 
 // MongoDB connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/tictactoe')
-  .then(() => console.log('✅ MongoDB connected'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
+// mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/tictactoe')
+//   .then(() => console.log('✅ MongoDB connected'))
+//   .catch(err => console.error('❌ MongoDB connection error:', err));
+
+connectDB()
+.then(()=> console.log('✅ Base de donnée connectée avec succès'))
+.catch((err) => console.log('❌ Erreur de connexion à la base de donnée', err));
+
+
+// Servir React en production
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+}
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/games', gameRoutes);
+
+// Catch-all handler pour React (doit être après les routes API)
+if (process.env.NODE_ENV === "production") {
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
+  });
+}
 
 // Socket.IO connection handling
 const connectedUsers = new Map();
@@ -260,6 +299,8 @@ function checkWinner(board, boardSize) {
   
   return null;
 }
+
+
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
