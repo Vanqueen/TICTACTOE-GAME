@@ -15,6 +15,7 @@ import { fileURLToPath } from "url";
 
 const allowedOrigins = [
   "https://tictactoe-game-iy2aujiiv-vanqueens-projects.vercel.app", // ton frontend Vercel
+  "https://https://tictactoe-game-gamma-orcin.vercel.app/", // ton frontend Vercel
   "http://localhost:5173",
   "http://localhost:5174",
   "http://localhost:5175",
